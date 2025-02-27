@@ -33,36 +33,38 @@ export default {
       var json = JSON.stringify({ email: this.email, password: this.password });
 
       axios
-        .post("https://localhost:7187/api/Account/Login", json, {
+        .post("https://localhost:7093/api/Account/Login", json, {
           headers: {
             "Content-Type": "application/json",
           },
         })
         .then((response) => {
-          alert("Credenciales validas !!!");
-          this.UserAuthenticate(response.data.token);
+          alert(response.data.message[0]);
+          localStorage.setItem("token", response.data.token);
+          this.RedirectUser();
         })
         .catch((error) => {
           alert("Credenciales invalidas");
           console.log(error);
         });
     },
-    UserAuthenticate(token) {
-      this.$store.commit("setAuthentication", true);
+    RedirectUser() {
+      var token = localStorage.getItem("token");
 
       axios
-        .get("https://localhost:7187/api/User/GetProfile", {
+        .get("https://localhost:7093/api/User/GetProfile", {
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
           },
         })
         .then((response) => {
-          console.log(response);
-          this.$store.commit("setUsername", response.data.name);
-          this.$store.commit("setEmail", response.data.email);
-          this.$router.push({ name: "Home" });
+          this.$store.commit("setAuthentication", true);
+          this.$store.commit("setUsername", response.data.userDTO.name);
+          this.$store.commit("setEmail", response.data.userDTO.email);
+          this.$router.push('/User');
         })
         .catch((error) => {
+          alert("Algo anda mal...");
           console.log(error);
         });
     },
@@ -85,5 +87,4 @@ export default {
   margin-top: 100px;
   padding: 10px;
 }
-
 </style>

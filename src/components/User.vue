@@ -1,12 +1,3 @@
-<template>
-  <div class="content">
-    <h1>Bienvenido {{ Username }}</h1>
-    <br />
-    <p>Datos personales: {{ Email }}</p>
-    <button @click="logout">Cerrar sesión</button>
-  </div>
-</template>
-
 <script>
 export default {
   name: "HomeUser",
@@ -26,6 +17,15 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div class="content">
+    <h1>Bienvenido {{ Username }}</h1>
+    <br />
+    <p>Datos personales: {{ Email }}</p>
+    <button @click="logout">Cerrar sesión</button>
+  </div>
+</template>
 
 <style>
 .content {

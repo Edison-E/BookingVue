@@ -22,6 +22,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+        store.commit("setAuthentication", true);
+    }
+    
     if (to.matched.some(record => record.meta.requiresAuth) && !store.state.isAuthenticate) {
         next('/');
     } else {
